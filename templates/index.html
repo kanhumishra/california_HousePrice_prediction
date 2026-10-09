@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>House Price Predictor</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef4ff 0%,
+                    #f8faff 50%,
+                    #eef8f4 100%
+                );
+
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        /* -------------------------
+           HEADER
+        ------------------------- */
+
+        header {
+            width: 100%;
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #172033;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 12px;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 20px;
+        }
+
+        .header-badge {
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            background: #e8f0ff;
+            color: #2563eb;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* -------------------------
+           MAIN
+        ------------------------- */
+
+        main {
+            width: 86%;
+            max-width: 1250px;
+
+            margin: 35px auto 70px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-label {
+            display: inline-block;
+
+            padding: 7px 14px;
+
+            border-radius: 30px;
+
+            background: #e8f0ff;
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+
+            margin-bottom: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 58px);
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero p {
+            max-width: 650px;
+
+            margin: auto;
+
+            color: #687386;
+
+            font-size: 16px;
+
+            line-height: 1.6;
+        }
+
+
+        /* -------------------------
+           APP GRID
+        ------------------------- */
+
+        .app-container {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.4fr)
+                minmax(300px, .6fr);
+
+            gap: 25px;
+
+            align-items: stretch;
+        }
+
+
+        /* -------------------------
+           FORM CARD
+        ------------------------- */
+
+        .card {
+            background: white;
+
+            border: 1px solid #e3e7ef;
+
+            border-radius: 24px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 15px 50px rgba(28, 45, 75, 0.07);
+        }
+
+        .card-header {
+            margin-bottom: 25px;
+        }
+
+        .card-header h2 {
+            font-size: 23px;
+            margin-bottom: 7px;
+        }
+
+        .card-header p {
+            color: #748096;
+            font-size: 14px;
+        }
+
+
+        /* -------------------------
+           FORM
+        ------------------------- */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+
+            font-weight: 650;
+
+            margin-bottom: 8px;
+
+            color: #344054;
+        }
+
+        .form-group input {
+            height: 48px;
+
+            width: 100%;
+
+            padding: 0 14px;
+
+            border: 1px solid #dfe4ec;
+
+            border-radius: 12px;
+
+            outline: none;
+
+            background: #fbfcfe;
+
+            font-size: 15px;
+
+            color: #172033;
+
+            transition: .2s;
+        }
+
+        .form-group input:hover {
+            border-color: #bdc7d8;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(37, 99, 235, .10);
+        }
+
+
+        /* -------------------------
+           BUTTONS
+        ------------------------- */
+
+        .buttons {
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 25px;
+        }
+
+        button {
+            border: none;
+
+            cursor: pointer;
+
+            min-height: 48px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .predict-button {
+            flex: 1;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            box-shadow:
+                0 8px 20px rgba(37, 99, 235, .22);
+        }
+
+        .predict-button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 12px 25px rgba(37, 99, 235, .30);
+        }
+
+        .predict-button:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .reset-button {
+            padding: 0 22px;
+
+            background: #f1f3f7;
+
+            color: #475467;
+        }
+
+        .reset-button:hover {
+            background: #e7eaf0;
+        }
+
+
+        /* -------------------------
+           RESULT CARD
+        ------------------------- */
+
+        .result-card {
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0f2b59,
+                    #1e56a0
+                );
+
+            color: white;
+
+            border-radius: 24px;
+
+            padding: 30px;
+
+            min-height: 100%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            box-shadow:
+                0 20px 50px rgba(22, 66, 130, .20);
+        }
+
+        .result-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.06);
+
+            right: -90px;
+            top: -70px;
+        }
+
+        .result-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+            height: 150px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.04);
+
+            left: -80px;
+            bottom: -60px;
+        }
+
+        .result-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-label {
+            color: #b9d3ff;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+        .result-card h2 {
+            font-size: 25px;
+
+            margin-bottom: 8px;
+        }
+
+        .result-description {
+            color: #c9d9f1;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        .price {
+            font-size: clamp(40px, 5vw, 58px);
+
+            line-height: 1;
+
+            letter-spacing: -2px;
+
+            font-weight: 800;
+
+            margin-top: 35px;
+
+            overflow-wrap: anywhere;
+        }
+
+        .price-label {
+            margin-top: 8px;
+
+            color: #bfd0e8;
+
+            font-size: 13px;
+        }
+
+
+        /* -------------------------
+           RESULT STATUS
+        ------------------------- */
+
+        .status {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 25px;
+
+            color: #dce9fb;
+
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #55d88b;
+
+            box-shadow:
+                0 0 0 4px rgba(85,216,139,.12);
+        }
+
+
+        /* -------------------------
+           STAT BOXES
+        ------------------------- */
+
+        .stats {
+            position: relative;
+            z-index: 1;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 30px;
+        }
+
+        .stat {
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background: rgba(255,255,255,.09);
+
+            border: 1px solid rgba(255,255,255,.10);
+        }
+
+        .stat-label {
+            display: block;
+
+            color: #b9cce8;
+
+            font-size: 11px;
+
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+
+        /* -------------------------
+           EMPTY STATE
+        ------------------------- */
+
+        .empty-result {
+            opacity: .85;
+        }
+
+        .empty-result .price {
+            font-size: 38px;
+            color: #d7e4f7;
+        }
+
+
+        /* -------------------------
+           ERROR
+        ------------------------- */
+
+        .error {
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 12px 14px;
+
+            border-radius: 10px;
+
+            background: #fff1f0;
+
+            border: 1px solid #ffd2cf;
+
+            color: #b42318;
+
+            font-size: 13px;
+        }
+
+
+        /* -------------------------
+           FOOTER
+        ------------------------- */
+
+        footer {
+            text-align: center;
+
+            color: #8a94a6;
+
+            font-size: 12px;
+
+            padding: 0 20px 30px;
+        }
+
+
+        /* -------------------------
+           RESPONSIVE
+        ------------------------- */
+
+        @media (max-width: 850px) {
+
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card {
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 18px 5%;
+            }
+
+            .header-badge {
+                display: none;
+            }
+
+            main {
+                width: 92%;
+
+                margin-top: 20px;
+            }
+
+            .hero {
+                margin-bottom: 25px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .card,
+            .result-card {
+                padding: 22px;
+
+                border-radius: 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .reset-button {
+                padding: 0;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🏠
+        </div>
+
+        <span>HomeValue AI</span>
+
+    </div>
+
+    <div class="header-badge">
+        Machine Learning Powered
+    </div>
+
+</header>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-label">
+            AI House Price Prediction
+        </div>
+
+        <h1>
+            Know your home's
+            <span>estimated value.</span>
+        </h1>
+
+        <p>
+            Enter your property details and our machine learning
+            model will estimate the value of your house instantly.
+        </p>
+
+    </section>
+
+
+
+    <!-- APP -->
+
+    <section class="app-container">
+
+
+        <!-- ================= FORM ================= -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Property Details
+                </h2>
+
+                <p>
+                    Enter the information used by the prediction model.
+                </p>
+
+            </div>
+
+
+            <form id="predictionForm">
+
+
+                <div class="form-grid">
+
+
+                    {% for column in columns %}
+
+                    <div class="form-group">
+
+                        <label for="{{ column }}">
+                            {{ column }}
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            id="{{ column }}"
+                            name="{{ column }}"
+                            placeholder="Enter {{ column }}"
+                            required
+                        >
+
+                    </div>
+
+                    {% endfor %}
+
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                <div
+                    id="errorMessage"
+                    class="error">
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="reset-button"
+                        id="resetButton">
+
+                        Reset
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="predict-button"
+                        id="predictButton">
+
+                        Predict House Price
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= RESULT ================= -->
+
+        <div
+            class="result-card"
+            id="resultCard">
+
+
+            <div class="result-content">
+
+                <div class="result-label">
+                    Prediction Result
+                </div>
+
+
+                <h2>
+                    Estimated House Value
+                </h2>
+
+
+                <p class="result-description">
+                    Your predicted property value will appear here
+                    after submitting the property details.
+                </p>
+
+
+                <div
+                    class="price"
+                    id="price">
+
+                    $0.00
+
+                </div>
+
+
+                <div class="price-label">
+                    Predicted market value
+                </div>
+
+
+                <div class="status">
+
+                    <span class="status-dot"></span>
+
+                    <span id="statusText">
+                        Waiting for prediction
+                    </span>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="stats">
+
+
+                    <div class="stat">
+
+                        <span class="stat-label">
+                            Model
+                        </span>
+
+                        <span class="stat-value">
+                            ML Predictor
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span class="stat-label">
+                            Features
+                        </span>
+
+                        <span class="stat-value">
+                            {{ columns|length }}
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<footer>
+
+    House Price Prediction • Machine Learning Application
+
+</footer>
+
+
+
+<script>
+
+    const form =
+        document.getElementById("predictionForm");
+
+    const predictButton =
+        document.getElementById("predictButton");
+
+    const resetButton =
+        document.getElementById("resetButton");
+
+    const priceElement =
+        document.getElementById("price");
+
+    const statusText =
+        document.getElementById("statusText");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    /*
+    -----------------------------------------
+    FORMAT PRICE
+    -----------------------------------------
+    */
+
+    function formatPrice(value) {
+
+        const number =
+            Number(value);
+
+        if (!Number.isFinite(number)) {
+            return "$0.00";
+        }
+
+        return new Intl.NumberFormat(
+            "en-US",
+            {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 2
+            }
+        ).format(number);
+
+    }
+
+
+    /*
+    -----------------------------------------
+    SHOW ERROR
+    -----------------------------------------
+    */
+
+    function showError(message) {
+
+        errorMessage.textContent =
+            message;
+
+        errorMessage.style.display =
+            "block";
+
+    }
+
+
+    /*
+    -----------------------------------------
+    HIDE ERROR
+    -----------------------------------------
+    */
+
+    function hideError() {
+
+        errorMessage.textContent =
+            "";
+
+        errorMessage.style.display =
+            "none";
+
+    }
+
+
+    /*
+    -----------------------------------------
+    FORM SUBMIT
+    -----------------------------------------
+    */
+
+    form.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            hideError();
+
+
+            /*
+            Loading state
+            */
+
+            predictButton.disabled =
+                true;
+
+            predictButton.textContent =
+                "Predicting...";
+
+            statusText.textContent =
+                "Analyzing property data...";
+
+
+            /*
+            Build query parameters
+            */
+
+            const formData =
+                new FormData(form);
+
+            const params =
+                new URLSearchParams();
+
+
+            for (
+                const [key, value]
+                of formData.entries()
+            ) {
+
+                params.append(
+                    key,
+                    value
+                );
+
+            }
+
+
+            try {
+
+
+                /*
+                Call Flask API
+                */
+
+                const response =
+                    await fetch(
+                        `/predict?${params.toString()}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok || !data.success) {
+
+                    throw new Error(
+                        data.error ||
+                        "Prediction failed."
+                    );
+
+                }
+
+
+                /*
+                Display result
+                */
+
+                priceElement.textContent =
+                    formatPrice(
+                        data.prediction
+                    );
+
+
+                statusText.textContent =
+                    "Prediction generated successfully";
+
+
+            }
+
+            catch(error) {
+
+                console.error(error);
+
+                showError(
+                    error.message ||
+                    "Something went wrong."
+                );
+
+                statusText.textContent =
+                    "Prediction failed";
+
+            }
+
+
+            finally {
+
+                predictButton.disabled =
+                    false;
+
+                predictButton.textContent =
+                    "Predict House Price";
+
+            }
+
+        }
+    );
+
+
+    /*
+    -----------------------------------------
+    RESET
+    -----------------------------------------
+    */
+
+    resetButton.addEventListener(
+        "click",
+        function() {
+
+            form.reset();
+
+            hideError();
+
+            priceElement.textContent =
+                "$0.00";
+
+            statusText.textContent =
+                "Waiting for prediction";
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
